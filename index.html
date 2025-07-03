@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dear Future Self - Quantum Identity Mapping</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .login-screen {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .login-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .login-container h1 {
+            color: white;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .login-container p {
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+
+        .login-form {
+            margin-bottom: 30px;
+        }
+
+        .login-form input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            font-size: 16px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .login-form input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .login-form input:focus {
+            outline: none;
+            border-color: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+        }
+
+        .login-error {
+            color: #ff6b6b;
+            font-size: 14px;
+            margin-top: 10px;
+            min-height: 20px;
+        }
+
+        .login-footer {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 14px;
+        }
+
+        .login-footer p {
+            margin: 5px 0;
+        }
+
+        .main-app {
+            display: block;
+        }
+
+        .main-app.hidden {
+            display: none;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            color: white;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .header p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.1em;
+            margin-bottom: 5px;
+        }
+
+        .credit {
+            color: rgba(255, 255, 255, 0.7);
+            font-style: italic;
+            margin-top: 15px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4CAF50, #2196F3);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+
+        .section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .section.hidden {
+            display: none;
+        }
+
+        .section h2 {
+            color: #4a5568;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .section h3 {
+            color: #2d3748;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .prompt-question {
+            background: linear-gradient(135deg, #f7fafc, #edf2f7);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 4px solid #667eea;
+        }
+
+        .prompt-question h4 {
+            color: #2d3748;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .prompt-question p {
+            color: #4a5568;
+            font-size: 0.95em;
+            margin-bottom: 5px;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 16px;
+            font-family: inherit;
+            resize: vertical;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 10px 5px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #718096, #4a5568);
+        }
+
+        .analysis-section {
+            background: linear-gradient(135deg, #f7fafc, #edf2f7);
+            border: 2px solid #667eea;
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 30px;
+        }
+
+        .analysis-content {
+            white-space: pre-wrap;
+            font-family: 'Georgia', serif;
+            line-height: 1.7;
+            color: #2d3748;
+        }
+
+        .copy-section {
+            background: #f0f8ff;
+            border: 1px solid #bee3f8;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .copy-section h4 {
+            color: #2b6cb0;
+            margin-bottom: 15px;
+        }
+
+        .copy-text {
+            background: white;
+            border: 1px solid #cbd5e0;
+            border-radius: 8px;
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            max-height: 200px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 30px;
+        }
+
+        .step-indicator {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .step-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transition: background 0.3s ease;
+        }
+
+        .step-dot.active {
+            background: #4CAF50;
+        }
+
+        .step-dot.completed {
+            background: #2196F3;
+        }
+
+        .warning {
+            background: #fef5e7;
+            border: 1px solid #f6ad55;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 20px 0;
+            color: #744210;
+        }
+
+        @media (max-width: 768px) {
+            .login-container {
+                padding: 30px 20px;
+            }
+            
+            .login-container h1 {
+                font-size: 2em;
+            }
+            
+            .container {
+                padding: 10px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .section {
+                padding: 20px;
+            }
+            
+            .navigation {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Login Screen -->
+        <div class="login-screen" id="loginScreen">
+            <div class="login-container">
+                <h1>Quantum Identity Mapping</h1>
+                <p>Premium Access Portal</p>
+                <div class="login-form">
+                    <input type="password" id="passwordInput" placeholder="Enter access code" />
+                    <button class="btn" onclick="checkPassword()">Access Tool</button>
+                    <div id="loginError" class="login-error"></div>
+                </div>
+                <div class="login-footer">
+                    <p>© Senga Cree Coaching</p>
+                    <p>For authorized clients only</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main App (Hidden by default) -->
+        <div class="main-app hidden" id="mainApp">
+        <div class="header">
+            <h1>Dear Future Self</h1>
+            <p>Quantum Identity Mapping & Linguistic Liberation</p>
+            <p>A Comprehensive Journaling & Analysis Tool</p>
+            <div class="credit">Created by Senga Cree Coaching</div>
+            
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            
+            <div class="step-indicator">
+                <div class="step-dot active" id="step1"></div>
+                <div class="step-dot" id="step2"></div>
+                <div class="step-dot" id="step3"></div>
+                <div class="step-dot" id="step4"></div>
+                <div class="step-dot" id="step5"></div>
+            </div>
+        </div>
+
+        <!-- Step 1: Vision Landscape -->
+        <div class="section" id="section1">
+            <h2>Step 1: Vision Landscape Journaling Exploration</h2>
+            
+            <div class="prompt-question">
+                <h4>Dear Future Self Visualization</h4>
+                <p>Describe your most expansive vision for 2025</p>
+                <p>What does your most liberated self look like?</p>
+                <p>If all limitations dissolved, what would emerge?</p>
+                <p>Capture the first words/feelings/symbols that arise</p>
+                <p><em>Consider: Self, Health, Wealth, Relationships - or use your own sequence</em></p>
+            </div>
+            <textarea id="vision" placeholder="Write your vision here..."></textarea>
+            
+            <div class="navigation">
+                <div></div>
+                <button class="btn" onclick="nextStep(2)">Next: Current Narrative →</button>
+            </div>
+        </div>
+
+        <!-- Step 2: Current Narrative Mapping -->
+        <div class="section hidden" id="section2">
+            <h2>Step 2: Current Narrative Mapping</h2>
+            
+            <div class="prompt-question">
+                <h4>Limiting Beliefs & Language Patterns</h4>
+                <p>List your top 3 current limiting beliefs</p>
+                <p>Describe the language you use when feeling stuck</p>
+                <p>What phrases do you repeat that feel constraining?</p>
+                <p>Where do you feel these beliefs in your body?</p>
+                <p>What emotions accompany these beliefs?</p>
+                <p>Describe when and where you feel unique, strong and supported.</p>
+            </div>
+            <textarea id="narrative" placeholder="Explore your current narrative patterns..."></textarea>
+            
+            <div class="navigation">
+                <button class="btn btn-secondary" onclick="prevStep(1)">← Previous</button>
+                <button class="btn" onclick="nextStep(3)">Next: Resistance Exploring →</button>
+            </div>
+        </div>
+
+        <!-- Step 3: Resistance Exploring -->
+        <div class="section hidden" id="section3">
+            <h2>Step 3: Resistance Exploring</h2>
+            
+            <div class="prompt-question">
+                <h4>Uncovering Hidden Resistance</h4>
+                <p>What are you most afraid of changing?</p>
+                <p>Where do you self-sabotage?</p>
+                <p>What stories have you been telling yourself?</p>
+                <p>What would radical self-trust look like?</p>
+            </div>
+            <textarea id="resistance" placeholder="Explore your resistance patterns..."></textarea>
+            
+            <div class="navigation">
+                <button class="btn btn-secondary" onclick="prevStep(2)">← Previous</button>
+                <button class="btn" onclick="nextStep(4)">Generate Analysis →</button>
+            </div>
+        </div>
+
+        <!-- Step 4: AI Analysis -->
+        <div class="section hidden" id="section4">
+            <h2>Step 4: Quantum Analysis Framework</h2>
+            
+            <div class="warning">
+                <strong>Instructions:</strong> Copy the text below and paste it into your preferred AI assistant (ChatGPT, Claude, etc.) along with your journal responses to receive your personalized quantum analysis.
+            </div>
+            
+            <div class="copy-section">
+                <h4>Your Journal Responses:</h4>
+                <div class="copy-text" id="journalResponses"></div>
+                <button class="btn" onclick="copyToClipboard('journalResponses')">Copy Journal Responses</button>
+            </div>
+            
+            <div class="copy-section">
+                <h4>AI Analysis Prompt:</h4>
+                <div class="copy-text" id="analysisPrompt">Perform a comprehensive multi-dimensional linguistic, psychological, and energetic analysis of the following journal entry.
+
+QUANTUM ANALYSIS FRAMEWORK:
+
+1. Linguistic Archaeology
+- Decode underlying narrative structures
+- Identify subconscious linguistic patterns
+- Reveal hidden meaning beneath surface language
+- Analyze energetic imprint of word choice
+
+2. Belief System Cartography
+- Trace belief origin landscapes
+- Identify generational/inherited belief patterns
+- Uncover unconscious limiting narratives
+- Map belief ecosystem:
+  * Core beliefs
+  * Peripheral beliefs
+  * Belief defense mechanisms
+  * Belief mutation potential
+
+3. Subconscious Theme Deconstruction
+- Extract primary unconscious themes
+- Identify recurring emotional archetypes
+- Decode protection mechanisms
+- Reveal unprocessed emotional landscapes
+- Map potential transformation portals
+
+4. Intention Energetics
+- Measure vibrational frequency of intentions
+- Analyze alignment between spoken/unspoken intentions
+- Identify intention-reality resonance
+- Explore quantum potential of current intention field
+- Decode unconscious intention saboteurs
+
+5. Belief Reprogramming Architecture
+- Generate alternative belief frameworks
+- Create precise linguistic reconstruction protocols
+- Develop embodied belief transformation techniques
+- Design energetic belief replacement strategies
+- Craft quantum leap belief activation scripts
+
+SPECIFIC ANALYSIS REQUESTS:
+- Identify top 3 linguistic patterns blocking transformation
+- Provide precise linguistic reframing techniques
+- Decode emotional charge of current narratives
+- Suggest embodied practices for belief mutation
+- Create a personalized transformation blueprint
+
+DELIVER AS:
+- Compassionate psychological mapping
+- Actionable transformation protocols
+- Linguistic repatterning suggestions
+- Quantum potential activation blueprint</div>
+                <button class="btn" onclick="copyToClipboard('analysisPrompt')">Copy Analysis Prompt</button>
+            </div>
+            
+            <div class="analysis-section">
+                <h3>Paste Your AI Analysis Here:</h3>
+                <textarea id="aiAnalysis" placeholder="Paste the AI analysis results here..." style="min-height: 300px;"></textarea>
+            </div>
+            
+            <div class="navigation">
+                <button class="btn btn-secondary" onclick="prevStep(3)">← Previous</button>
+                <button class="btn" onclick="nextStep(5)">Final Reflections →</button>
+            </div>
+        </div>
+
+        <!-- Step 5: Post Analysis Reflection -->
+        <div class="section hidden" id="section5">
+            <h2>Step 5: Post Analysis Reflection</h2>
+            
+            <div class="prompt-question">
+                <h4>Integration & Next Steps</h4>
+                <p>What surprised you in the analysis?</p>
+                <p>Which insights feel most potent?</p>
+                <p>What resistance are you noticing?</p>
+                <p>Choose 3 key transformational insights</p>
+                <p>Create aligned next right steps for these.</p>
+            </div>
+            <textarea id="reflection" placeholder="Reflect on your analysis and insights..."></textarea>
+            
+            <div class="navigation">
+                <button class="btn btn-secondary" onclick="prevStep(4)">← Previous</button>
+                <button class="btn" onclick="generateReport()">Generate Complete Report</button>
+            </div>
+        </div>
+
+        <!-- Complete Report -->
+        <div class="section hidden" id="completeReport">
+            <h2>Your Complete Quantum Identity Mapping Report</h2>
+            <div id="reportContent"></div>
+            <div class="navigation">
+                <button class="btn" onclick="downloadReport()">Download Report</button>
+                <button class="btn btn-secondary" onclick="startOver()">Start New Journey</button>
+            </div>
+        </div>
+        </div>
+        <!-- End Main App -->
+    </div>
+
+    <script>
+        // Password Protection
+        const ACCESS_CODE = "quantum2025"; // Change this to your desired password
+        
+        function checkPassword() {
+            const input = document.getElementById('passwordInput').value;
+            const errorDiv = document.getElementById('loginError');
+            
+            if (input === ACCESS_CODE) {
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('mainApp').classList.remove('hidden');
+                // Store access in session
+                sessionStorage.setItem('quantumAccess', 'granted');
+            } else {
+                errorDiv.textContent = 'Invalid access code. Please try again.';
+                document.getElementById('passwordInput').value = '';
+                document.getElementById('passwordInput').focus();
+            }
+        }
+        
+        // Check if user already has access
+        window.addEventListener('load', function() {
+            if (sessionStorage.getItem('quantumAccess') === 'granted') {
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('mainApp').classList.remove('hidden');
+            }
+        });
+        
+        // Allow Enter key to submit password
+        document.getElementById('passwordInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkPassword();
+            }
+        });
+
+        let currentStep = 1;
+        const totalSteps = 5;
+
+        function updateProgress() {
+            const progressPercent = ((currentStep - 1) / (totalSteps - 1)) * 100;
+            document.getElementById('progressFill').style.width = progressPercent + '%';
+            
+            // Update step indicators
+            for (let i = 1; i <= totalSteps; i++) {
+                const stepDot = document.getElementById(`step${i}`);
+                if (i < currentStep) {
+                    stepDot.className = 'step-dot completed';
+                } else if (i === currentStep) {
+                    stepDot.className = 'step-dot active';
+                } else {
+                    stepDot.className = 'step-dot';
+                }
+            }
+        }
+
+        function nextStep(step) {
+            // Validate current step
+            if (currentStep === 1 && !document.getElementById('vision').value.trim()) {
+                alert('Please complete your vision before proceeding.');
+                return;
+            }
+            if (currentStep === 2 && !document.getElementById('narrative').value.trim()) {
+                alert('Please complete your narrative mapping before proceeding.');
+                return;
+            }
+            if (currentStep === 3 && !document.getElementById('resistance').value.trim()) {
+                alert('Please complete your resistance exploration before proceeding.');
+                return;
+            }
+            
+            if (step === 4) {
+                generateJournalSummary();
+            }
+            
+            document.getElementById(`section${currentStep}`).classList.add('hidden');
+            document.getElementById(`section${step}`).classList.remove('hidden');
+            currentStep = step;
+            updateProgress();
+            window.scrollTo(0, 0);
+        }
+
+        function prevStep(step) {
+            document.getElementById(`section${currentStep}`).classList.add('hidden');
+            document.getElementById(`section${step}`).classList.remove('hidden');
+            currentStep = step;
+            updateProgress();
+            window.scrollTo(0, 0);
+        }
+
+        function generateJournalSummary() {
+            const vision = document.getElementById('vision').value;
+            const narrative = document.getElementById('narrative').value;
+            const resistance = document.getElementById('resistance').value;
+            
+            const summary = `DEAR FUTURE SELF - QUANTUM IDENTITY MAPPING JOURNAL
+
+VISION LANDSCAPE:
+${vision}
+
+CURRENT NARRATIVE MAPPING:
+${narrative}
+
+RESISTANCE EXPLORING:
+${resistance}
+
+---
+
+Please analyze this journal entry using the Quantum Analysis Framework provided below.`;
+            
+            document.getElementById('journalResponses').textContent = summary;
+        }
+
+        function copyToClipboard(elementId) {
+            const element = document.getElementById(elementId);
+            const text = element.textContent;
+            
+            navigator.clipboard.writeText(text).then(() => {
+                const button = event.target;
+                const originalText = button.textContent;
+                button.textContent = 'Copied!';
+                button.style.background = '#48bb78';
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.style.background = '';
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy text: ', err);
+                alert('Failed to copy text. Please select and copy manually.');
+            });
+        }
+
+        function generateReport() {
+            const vision = document.getElementById('vision').value;
+            const narrative = document.getElementById('narrative').value;
+            const resistance = document.getElementById('resistance').value;
+            const analysis = document.getElementById('aiAnalysis').value;
+            const reflection = document.getElementById('reflection').value;
+            
+            if (!reflection.trim()) {
+                alert('Please complete your final reflection before generating the report.');
+                return;
+            }
+            
+            const reportHTML = `
+                <h3>Vision Landscape</h3>
+                <div class="analysis-content">${vision}</div>
+                
+                <h3>Current Narrative Mapping</h3>
+                <div class="analysis-content">${narrative}</div>
+                
+                <h3>Resistance Exploring</h3>
+                <div class="analysis-content">${resistance}</div>
+                
+                <h3>AI Quantum Analysis</h3>
+                <div class="analysis-content">${analysis}</div>
+                
+                <h3>Post Analysis Reflection</h3>
+                <div class="analysis-content">${reflection}</div>
+                
+                <div style="margin-top: 30px; padding: 20px; background: #f7fafc; border-radius: 10px; text-align: center;">
+                    <p><strong>Date Completed:</strong> ${new Date().toLocaleDateString()}</p>
+                    <p><em>Created with the Dear Future Self Quantum Identity Mapping Framework</em></p>
+                    <p><em>© Senga Cree Coaching</em></p>
+                </div>
+            `;
+            
+            document.getElementById('reportContent').innerHTML = reportHTML;
+            document.getElementById(`section${currentStep}`).classList.add('hidden');
+            document.getElementById('completeReport').classList.remove('hidden');
+            window.scrollTo(0, 0);
+        }
+
+        function downloadReport() {
+            const reportContent = document.getElementById('reportContent').innerHTML;
+            const fullReport = `
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>Dear Future Self - Quantum Identity Mapping Report</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; line-height: 1.6; }
+                        h3 { color: #4a5568; border-bottom: 2px solid #667eea; padding-bottom: 10px; margin-top: 30px; }
+                        .analysis-content { background: #f7fafc; padding: 15px; border-radius: 8px; margin: 15px 0; }
+                    </style>
+                </head>
+                <body>
+                    <h1>Dear Future Self - Quantum Identity Mapping Report</h1>
+                    ${reportContent}
+                </body>
+                </html>
+            `;
+            
+            const blob = new Blob([fullReport], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `Dear_Future_Self_Report_${new Date().toISOString().split('T')[0]}.html`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function startOver() {
+            if (confirm('Are you sure you want to start over? This will clear all your current responses.')) {
+                // Clear all inputs
+                document.getElementById('vision').value = '';
+                document.getElementById('narrative').value = '';
+                document.getElementById('resistance').value = '';
+                document.getElementById('aiAnalysis').value = '';
+                document.getElementById('reflection').value = '';
+                
+                // Reset to step 1
+                document.getElementById('completeReport').classList.add('hidden');
+                document.getElementById('section1').classList.remove('hidden');
+                currentStep = 1;
+                updateProgress();
+                window.scrollTo(0, 0);
+            }
+        }
+
+        // Initialize
+        updateProgress();
+    </script>
+</body>
+</html>
