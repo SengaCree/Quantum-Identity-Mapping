@@ -689,19 +689,79 @@ Please analyze this journal entry using the Quantum Analysis Framework provided 
             const element = document.getElementById(elementId);
             const text = element.textContent;
             
-            navigator.clipboard.writeText(text).then(() => {
-                const button = event.target;
-                const originalText = button.textContent;
-                button.textContent = 'Copied!';
-                button.style.background = '#48bb78';
+            // Try modern clipboard API first
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(text).then(() => {
+                    const button = event.target;
+                    const originalText = button.textContent;
+                    button.textContent = '✅ Copied!';
+                    button.style.background = '#48bb78';
+                    setTimeout(() => {
+                        button.textContent = originalText;
+                        button.style.background = '';
+                    }, 2000);
+                }).catch(err => {
+                    fallbackCopy(text, event.target);
+                });
+            } else {
+                fallbackCopy(text, event.target);
+            }
+        }
+        
+        function fallbackCopy(text, button) {
+            // Create a temporary textarea element
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+            textArea.style.position = 'fixed';
+            textArea.style.left = '-999999px';
+            textArea.style.top = '-999999px';
+            document.body.appendChild(textArea);
+            
+            try {
+                textArea.focus();
+                textArea.select();
+                
+                // Try the older execCommand method
+                const successful = document.execCommand('copy');
+                
+                if (successful) {
+                    const originalText = button.textContent;
+                    button.textContent = '✅ Copied!';
+                    button.style.background = '#48bb78';
+                    setTimeout(() => {
+                        button.textContent = originalText;
+                        button.style.background = '';
+                    }, 2000);
+                } else {
+                    throw new Error('Copy command failed');
+                }
+            } catch (err) {
+                // If all else fails, select the text for manual copying
+                const element = document.getElementById(text.includes('DEAR FUTURE SELF') ? 'journalResponses' : 'analysisPrompt');
+                element.style.background = '#fff3cd';
+                element.style.border = '2px solid #ffc107';
+                
+                // Select the text
+                if (window.getSelection) {
+                    const selection = window.getSelection();
+                    const range = document.createRange();
+                    range.selectNodeContents(element);
+                    selection.removeAllRanges();
+                    selection.addRange(range);
+                }
+                
+                button.textContent = 'Text Selected - Press Ctrl+C';
+                button.style.background = '#ffc107';
+                
                 setTimeout(() => {
-                    button.textContent = originalText;
+                    element.style.background = '';
+                    element.style.border = '';
+                    button.textContent = button.textContent.includes('Journal') ? 'Copy Journal Responses' : 'Copy Analysis Prompt';
                     button.style.background = '';
-                }, 2000);
-            }).catch(err => {
-                console.error('Failed to copy text: ', err);
-                alert('Failed to copy text. Please select and copy manually.');
-            });
+                }, 5000);
+            } finally {
+                document.body.removeChild(textArea);
+            }
         }
 
         function generateReport() {
