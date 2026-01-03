@@ -143,6 +143,29 @@
             font-size: 1.05em;
         }
 
+        .prompt-box {
+            background: linear-gradient(135deg, #667eea10 0%, #764ba210 100%);
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+            margin-bottom: 20px;
+        }
+
+        .prompt-box p {
+            margin-bottom: 12px;
+            color: #333;
+            line-height: 1.7;
+        }
+
+        .prompt-box p:last-child {
+            margin-bottom: 0;
+        }
+
+        .prompt-box em {
+            color: #764ba2;
+            font-style: italic;
+        }
+
         textarea {
             width: 100%;
             min-height: 200px;
@@ -285,11 +308,16 @@
 
         <!-- Step 1: Vision Landscape -->
         <div class="section" id="section1">
-            <h2>Step 1: Dear Future Self Visualization</h2>
-            <p class="prompt">
-                Describe your most expansive vision for the next 12 months. What does your most liberated self look like? What are you creating? How are you living?
-            </p>
-            <textarea id="vision" placeholder="Write your quantum vision here..."></textarea>
+            <h2>Step 1: Vision Landscape Journaling Exploration</h2>
+            <div class="prompt-box">
+                <p><strong>Dear Future Self Visualization</strong></p>
+                <p>Describe your most expansive vision for the next 12 months</p>
+                <p>What does your most liberated self look like?</p>
+                <p>If all limitations dissolved, what would emerge?</p>
+                <p>Capture the first words/feelings/symbols that arise</p>
+                <p><em>Consider: Self, Health, Wealth, Relationships - or use your own sequence</em></p>
+            </div>
+            <textarea id="vision" placeholder="Write your vision here..."></textarea>
             <div class="button-group">
                 <button class="primary-btn" onclick="nextStep(2)">Continue →</button>
             </div>
