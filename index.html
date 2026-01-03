@@ -353,10 +353,26 @@
         <div class="section hidden" id="section4">
             <h2>Step 4: Quantum Analysis & Insights</h2>
             <p class="prompt">
-                Based on your inputs, here's your personalized analysis and linguistic reprogramming suggestions:
+                Generate your personalized analysis by copying both sections below and pasting them into Claude (or your preferred AI tool):
+            </p>
+            
+            <div class="ai-analysis" style="margin-bottom: 25px;">
+                <h3 style="color: #667eea; margin-bottom: 15px;">📝 Your Journal Entries</h3>
+                <textarea id="userInputs" readonly style="min-height: 200px; background: #fff;"></textarea>
+                <button class="primary-btn" style="margin-top: 15px; width: auto;" onclick="copyUserInputs()">📋 Copy Journal Entries</button>
+            </div>
+            
+            <div class="ai-analysis" style="margin-bottom: 25px;">
+                <h3 style="color: #667eea; margin-bottom: 15px;">🔮 Analysis Framework</h3>
+                <textarea id="analysisFramework" readonly style="min-height: 300px; background: #fff;"></textarea>
+                <button class="primary-btn" style="margin-top: 15px; width: auto;" onclick="copyFramework()">📋 Copy Analysis Framework</button>
+            </div>
+            
+            <p class="prompt" style="margin-top: 30px;">
+                After receiving your analysis, paste it here:
             </p>
             <div class="ai-analysis">
-                <textarea id="aiAnalysis" placeholder="Your AI-powered analysis will appear here... (You can also paste analysis from Claude or other AI tools)"></textarea>
+                <textarea id="aiAnalysis" placeholder="Paste your personalized analysis here..."></textarea>
             </div>
             <div class="button-group">
                 <button class="secondary-btn" onclick="previousStep(3)">← Back</button>
@@ -445,29 +461,104 @@
             const narrative = document.getElementById('narrative').value;
             const resistance = document.getElementById('resistance').value;
 
-            // Create AI prompt
-            const prompt = `Based on this Quantum Identity Mapping:
-
-QUANTUM VISION:
+            // Populate user inputs
+            const userInputs = `QUANTUM VISION:
 ${vision}
 
 CURRENT NARRATIVE:
 ${narrative}
 
 RESISTANCE & LIMITING BELIEFS:
-${resistance}
+${resistance}`;
 
-Please provide:
-1. Key linguistic patterns and beliefs identified
-2. Quantum reprogramming suggestions
-3. Specific language transformations to shift reality
-4. Next-level identity activations`;
+            document.getElementById('userInputs').value = userInputs;
 
-            // Store for AI analysis
-            document.getElementById('aiAnalysis').placeholder = 
-                "Copy the prompt below and paste it into Claude (or your preferred AI tool), then paste the response back here:\n\n" + prompt;
+            // Populate analysis framework
+            const framework = `Please analyze this journal entry using the Quantum Analysis Framework provided below. Perform a comprehensive multi-dimensional linguistic, psychological, and energetic analysis of the following journal entry.
+
+QUANTUM ANALYSIS FRAMEWORK:
+
+1. Linguistic Archaeology
+- Decode underlying narrative structures
+- Identify subconscious linguistic patterns
+- Reveal hidden meaning beneath surface language
+- Analyze energetic imprint of word choice
+
+2. Belief System Cartography
+- Trace belief origin landscapes
+- Identify generational/inherited belief patterns
+- Uncover unconscious limiting narratives
+- Map belief ecosystem:
+  * Core beliefs
+  * Peripheral beliefs
+  * Belief defense mechanisms
+  * Belief mutation potential
+
+3. Subconscious Theme Deconstruction
+- Extract primary unconscious themes
+- Identify recurring emotional archetypes
+- Decode protection mechanisms
+- Reveal unprocessed emotional landscapes
+- Map potential transformation portals
+
+4. Intention Energetics
+- Measure vibrational frequency of intentions
+- Analyze alignment between spoken/unspoken intentions
+- Identify intention-reality resonance
+- Explore quantum potential of current intention field
+- Decode unconscious intention saboteurs
+
+5. Belief Reprogramming Architecture
+- Generate alternative belief frameworks
+- Create precise linguistic reconstruction protocols
+- Develop embodied belief transformation techniques
+- Design energetic belief replacement strategies
+- Craft quantum leap belief activation scripts
+
+SPECIFIC ANALYSIS REQUESTS:
+- Identify top 3 linguistic patterns blocking transformation
+- Provide precise linguistic reframing techniques
+- Decode emotional charge of current narratives
+- Suggest embodied practices for belief mutation
+- Create a personalized transformation blueprint
+
+DELIVER AS:
+- Compassionate psychological mapping
+- Actionable transformation protocols
+- Linguistic repatterning suggestions
+- Quantum potential activation blueprint`;
+
+            document.getElementById('analysisFramework').value = framework;
 
             nextStep(4);
+        }
+
+        function copyUserInputs() {
+            const inputText = document.getElementById('userInputs');
+            inputText.select();
+            document.execCommand('copy');
+            
+            // Visual feedback
+            const btn = event.target;
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '✅ Copied!';
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+            }, 2000);
+        }
+
+        function copyFramework() {
+            const frameworkText = document.getElementById('analysisFramework');
+            frameworkText.select();
+            document.execCommand('copy');
+            
+            // Visual feedback
+            const btn = event.target;
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '✅ Copied!';
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+            }, 2000);
         }
 
         function generateReport() {
